@@ -49,7 +49,7 @@ $table->foreign('avatar_image_id')
 // add relation to a model
 public function avatarImage()
 {
-	$model->balongsTo(ImageModel::class, 'avatar_image_id');
+	$model->belongsTo(ImageModel::class, 'avatar_image_id');
 }
 
 
