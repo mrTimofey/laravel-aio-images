@@ -39,7 +39,7 @@ Usage examples:
 ```php
 
 // add relation to a table
-$table->string('avatar_image_id');
+$table->string('avatar_image_id')->nullable();
 $table->foreign('avatar_image_id')
 	->references('id')
 	->on('aio_images')
