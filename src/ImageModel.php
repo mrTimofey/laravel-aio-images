@@ -2,6 +2,7 @@
 
 namespace MrTimofey\LaravelAioImages;
 
+use Approached\LaravelImageOptimizer\ImageOptimizer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\Image;
@@ -119,7 +120,7 @@ class ImageModel extends Model
         }
 
         if ($ext !== 'svg') {
-            app(ImageOptimizer::class)->optimizeImage($uploadPath . $fileName);
+            app(ImageOptimizer::class)->optimizeImage($uploadPath . '/' . $fileName);
         }
         @chmod($uploadPath . $fileName, 0664);
         $i = new static();
