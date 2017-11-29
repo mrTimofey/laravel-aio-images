@@ -1,5 +1,7 @@
 # All-in-one Laravel image processing
 
+Laravel 5 is required.
+
 This package includes the following:
 * images database table migration;
 * images Eloquent model;
@@ -16,14 +18,14 @@ On-the-fly image generation just uses [intervention/image](http://image.interven
 ```
 sudo apt-get install pngquant gifsicle jpegoptim
 composer require mr-timofey/laravel-aio-images
-php artisan vendor:publish --tag=imageoptimizer
-php artisan vendor:publish --tag=aio_images
 ```
 
 Add `Approached\LaravelImageOptimizer\ServiceProvider` and `MrTimofey\LaravelAioImages\ServiceProvider`
 to your `app.providers` config.
 
 ```bash
+php artisan vendor:publish --tag=imageoptimizer
+php artisan vendor:publish --tag=aio_images
 php artisan migrate
 ```
 
