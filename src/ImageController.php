@@ -42,7 +42,18 @@ class ImageController extends Controller
     {
         $uploaded = [];
         foreach ($this->req->allFiles() as $file) {
-            $uploaded[] = ImageModel::upload($file);
+            if (\is_array($file)) {
+                foreach ($file as $_file) {
+                    $uploaded[] = ImageModel::upload($_file)->id;
+                }
+            } else {
+                $uploaded[] = ImageModel::upload($file)->id;
+            }
+        }
+        foreach ($this->req->allFiles() as $fieldName => $files) {
+            foreach ($files as $file) {
+                $uploaded[] = ImageModel::upload($file)->id;
+            }
         }
         return $this->req->wantsJson() ? response()->json($uploaded) : redirect()->back();
     }
