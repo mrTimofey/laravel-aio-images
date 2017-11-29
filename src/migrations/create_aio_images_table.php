@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAioImagesTable extends Migration
 {
-    public function up(): void
+    public function up()
     {
         Schema::create('aio_images', function (Blueprint $table) {
             $table->string('id')->unique();
@@ -15,7 +15,7 @@ class CreateAioImagesTable extends Migration
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('aio_images');
     }

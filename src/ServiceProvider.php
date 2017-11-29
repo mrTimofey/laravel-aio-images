@@ -4,7 +4,7 @@ namespace MrTimofey\LaravelAioImages;
 
 use Illuminate\Support\ServiceProvider as Base;
 
-class ImageProvider extends Base
+class ServiceProvider extends Base
 {
     public function register()
     {
@@ -22,10 +22,17 @@ class ImageProvider extends Base
     {
         $router = $this->app->make('router');
         $config = $this->app->make('config')->get('aio_images');
+        $public = rtrim($config['public_path']);
 
-        $router->get(rtrim($config['public_path']) .'/{pipe}/{path}', 'MrTimofey\LaravelAioImages\ImageController@generate')
-            ->middleware($config['generate_middleware'])
-            ->name('aio_images.generate');
+        $router->get($public . '/{pipe}/{image_id}',
+            'MrTimofey\LaravelAioImages\ImageController@pipe')
+            ->middleware($config['pipe_middleware'])
+            ->name('aio_images.pipe');
+
+        $router->get($public . '/{image_id}',
+            'MrTimofey\LaravelAioImages\ImageController@original')
+            ->name('aio_images.original');
+
         if (!empty($config['upload_route'])) {
             $router->post($config['upload_route'], 'MrTimofey\LaravelAioImages\ImageController@upload')
                 ->middleware($config['upload_middleware'])

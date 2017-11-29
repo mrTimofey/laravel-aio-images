@@ -9,14 +9,14 @@ return [
     /**
      * Absolute path where all images will be stored.
      * IMPORTANT: public_path is used to access this folder so it should be
-     *      a real physical public HTTP path or a symlink.
+     *      a real physical path accessible by HTTP using public_path prefix.
      */
     'upload_path' => public_path('storage/images'),
 
     /**
-     * On-the-fly image generation middleware
+     * On-the-fly image generation middleware.
      */
-    'generate_middleware' => [],
+    'pipe_middleware' => [],
 
     /**
      * Images upload route. Set to false to disable.
@@ -33,10 +33,10 @@ return [
      * @see http://image.intervention.io/
      */
     'pipes' => [
-        // /storage/images/example-avatar/image-id.jpg
-        'example-avatar' => [
-            // $interventionImage->fit(200, 200)
-            ['fit', 200, 200],
+        // /storage/images/avatar/image-id.jpg
+        'avatar' => [
+            // $interventionImage->fit(120)
+            ['fit', 120],
             // $interventionImage->greyscale()
             ['greyscale']
         ]

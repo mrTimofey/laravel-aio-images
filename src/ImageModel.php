@@ -35,17 +35,12 @@ class ImageModel extends Model
         'created_at'
     ];
 
-    public static function getUploadPath(): string
+    public static function getUploadPath()
     {
         return rtrim(config('aio_images.upload_path'), '/');
     }
 
-    public static function getPublicPath(): string
-    {
-        return rtrim(config('aio_images.public_path'), '/');
-    }
-
-    protected function unlink(): void
+    protected function unlink()
     {
         $fs = app('files');
         $fs->delete($this->getAbsPath());
@@ -66,7 +61,7 @@ class ImageModel extends Model
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
-    public static function upload($file, array $props = []): self
+    public static function upload($file, array $props = [])
     {
         if (isset($props['ext'])) {
             $ext = $props['ext'];
@@ -143,38 +138,26 @@ class ImageModel extends Model
      * @param string|null $pipeName
      * @return string
      */
-    public function getPath($pipeName = null): string
+    public function getPath($pipeName = null)
     {
-        return static::getPublicPath() . ($pipeName ? $this->getProcessedPath($pipeName) : $this->attributes['id']);
+        return $pipeName ? route('aio_images.pipe', [$pipeName, $this->attributes['id']]) :
+            route('aio_images.original', $this->attributes['id']);
     }
 
     /**
      * @param string|null $pipeName
      * @return string
      */
-    public function getAbsPath($pipeName = null): string
+    public function getAbsPath($pipeName = null)
     {
-        $fs = app('files');
         $uploadPath = static::getUploadPath();
-        $path = $pipeName ? $this->getProcessedPath($pipeName) : $this->attributes['id'];
-        $dir = $uploadPath . $pipeName;
-        if ($pipeName && !$fs->exists($dir)) {
-            $fs->makeDirectory($dir);
-            @chmod($dir, 0774);
+        if ($pipeName) {
+            $uploadPath .= '/' . $pipeName;
         }
-        return $uploadPath . $path;
+        return $uploadPath . '/' . $this->attributes['id'];
     }
 
-    /**
-     * @param string $pipeName
-     * @return string
-     */
-    public function getProcessedPath(string $pipeName): string
-    {
-        return route('aio_images.generate', ['pipe' => $pipeName, 'path' => $this->attributes['id']]);
-    }
-
-    public function setIdAttribute(string $value): void
+    public function setIdAttribute(string $value)
     {
         if (empty($this->attributes['id'])) {
             $this->attributes['id'] = $value;
@@ -183,7 +166,7 @@ class ImageModel extends Model
         throw new \InvalidArgumentException('You can not set image ID manually!');
     }
 
-    public static function boot(): void
+    public static function boot()
     {
         parent::boot();
         static::deleting(function (self $i) {

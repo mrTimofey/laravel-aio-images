@@ -8,7 +8,8 @@ use Illuminate\Routing\Controller;
 use Intervention\Image\ImageManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ImageController extends Controller {
+class ImageController extends Controller
+{
     /**
      * @var Request
      */
@@ -46,7 +47,12 @@ class ImageController extends Controller {
         return $this->req->wantsJson() ? response()->json($uploaded) : redirect()->back();
     }
 
-    public function generate(string $pipeName, string $imageId)
+    public function original()
+    {
+        throw new \RuntimeException('Use web server configuration to request original/generated images');
+    }
+
+    public function pipe(string $pipeName, string $imageId)
     {
         if (empty($this->pipesConfig[$pipeName]) || ends_with($imageId, '.svg')) {
             throw new NotFoundHttpException();

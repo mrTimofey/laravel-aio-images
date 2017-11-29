@@ -1,20 +1,37 @@
 {
-    "name": "mr-timofey/laravel-aio-images",
-    "description": "All-in-one Laravel image processing",
-    "type": "library",
-    "require": {
-        "intervention/image": "^2.4",
-        "approached/laravel-image-optimizer": "^2.3"
-    },
-    "authors": [
-        {
-            "name": "Timofey",
-            "email": "timoxa17@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "MrTimofey\\LaravelAioImages\\": "src/"
-        }
+  "name": "mr-timofey/laravel-aio-images",
+  "description": "All-in-one Laravel image processing",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "image",
+    "optimize",
+    "resize",
+    "gd",
+    "imagick",
+    "watermark",
+    "greyscale",
+    "thumbnail",
+    "laravel"
+  ],
+  "require": {
+    "intervention/image": "^2.4",
+    "approached/laravel-image-optimizer": "^2.3"
+  },
+  "authors": [
+    {
+      "name": "Timofey",
+      "email": "timoxa17@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "MrTimofey\\LaravelAioImages\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": ["MrTimofey\\LaravelAioImages\\ServiceProvider"]
+    }
+  }
 }
