@@ -50,11 +50,6 @@ class ImageController extends Controller
                 $uploaded[] = ImageModel::upload($file)->id;
             }
         }
-        foreach ($this->req->allFiles() as $fieldName => $files) {
-            foreach ($files as $file) {
-                $uploaded[] = ImageModel::upload($file)->id;
-            }
-        }
         return $this->req->wantsJson() ? response()->json($uploaded) : redirect()->back();
     }
 
