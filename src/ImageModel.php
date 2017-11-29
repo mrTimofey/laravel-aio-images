@@ -154,6 +154,10 @@ class ImageModel extends Model
         $uploadPath = static::getUploadPath();
         if ($pipeName) {
             $uploadPath .= '/' . $pipeName;
+            $fs = app('files');
+            if (!$fs->exists($uploadPath)) {
+                $fs->makeDirectory($uploadPath);
+            }
         }
         return $uploadPath . '/' . $this->attributes['id'];
     }
