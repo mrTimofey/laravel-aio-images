@@ -5,7 +5,7 @@ Laravel 5 is required.
 This package includes the following:
 * images database table migration;
 * images Eloquent model;
-* controller for uploads and on-the-fly image processing/caching;
+* controller for uploads and on-the-fly/on-demand image processing/caching;
 * service provider.
 
 Any uploaded or generated image is automatically optimized using the
@@ -15,21 +15,25 @@ On-the-fly image generation just uses [intervention/image](http://image.interven
 
 ## Installation
 
-```
+```bash
 sudo apt-get install pngquant gifsicle jpegoptim
 composer require mr-timofey/laravel-aio-images
 ```
 
-Add `Approached\LaravelImageOptimizer\ServiceProvider` and `MrTimofey\LaravelAioImages\ServiceProvider`
+Add
+`Approached\LaravelImageOptimizer\ServiceProvider`,
+`Intervention\Image\ImageServiceProvider`,
+`MrTimofey\LaravelAioImages\ServiceProvider`
 to your `app.providers` config.
 
 ```bash
-php artisan vendor:publish --tag=imageoptimizer
-php artisan vendor:publish --tag=aio_images
+php artisan vendor:publish --provider="Approached\LaravelImageOptimizer\ServiceProvider"
+php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravel5"
+php artisan vendor:publish --provider="MrTimofey\LaravelAioImages\ServiceProvider"
 php artisan migrate
 ```
 
-If you want to use `storage/app/public` as a place to store all your images (Laravel recommended way):
+If you want to use `storage/app/public` as a place to store all your images (configured by default):
 
 ```bash
 php artisan storage:link
