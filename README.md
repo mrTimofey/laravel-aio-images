@@ -50,7 +50,7 @@ See `config/aio_images.php` file for a further configuration instructions.
 
 // add relation to a table
 /** @var Illuminate\Database\Schema\Blueprint $table */
-$table->string('avatar_image_id');
+$table->string('avatar_image_id')->nullable();
 $table->foreign('avatar_image_id')
 	->references('id')
 	->on('aio_images')
