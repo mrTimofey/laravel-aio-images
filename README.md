@@ -105,3 +105,7 @@ function upload(Request $req)
 }
 
 ```
+
+TODO list:
+
+* add API to allow to add custom pipes from custom sources
