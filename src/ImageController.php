@@ -57,7 +57,7 @@ class ImageController extends Controller
         if (empty($this->pipesConfig[$pipeName]) || ends_with($imageId, '.svg')) {
             throw new NotFoundHttpException();
         }
-        $pipe = $this->pipesConfig['pipes'][$pipeName];
+        $pipe = $this->pipesConfig[$pipeName];
 
         /** @var ImageModel $img */
         $img = ImageModel::query()->findOrFail($imageId);
