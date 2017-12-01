@@ -6,15 +6,10 @@ use Illuminate\Support\ServiceProvider as Base;
 
 class ServiceProvider extends Base
 {
-    public function register()
-    {
-        $this->mergeConfigFrom(__DIR__ . '/config.php', 'aio_images');
-    }
-
     public function boot()
     {
-        $this->publishes([__DIR__ . '/config.php' => config_path('aio_images.php')]);
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        $this->publishes([__DIR__ . '/../config.php' => config_path('aio_images.php')], 'config');
+        $this->publishes([__DIR__ . '/../migrations' => database_path('migrations')], 'migrations');
         $this->registerRoutes();
     }
 
