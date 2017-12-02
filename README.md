@@ -1,7 +1,5 @@
 # All-in-one Laravel image processing
 
-Laravel 5 is required.
-
 This package includes the following:
 * images database table migration;
 * images Eloquent model;
@@ -12,6 +10,11 @@ Any uploaded or generated image is automatically optimized using the
 [approached/laravel-image-optimizer](https://github.com/approached/laravel-image-optimizer) package.
 
 On-the-fly image generation just uses [intervention/image](http://image.intervention.io/) package.
+
+## Requirements
+
+* PHP 7.1
+* Laravel 5.5
 
 ## Installation
 
@@ -32,6 +35,10 @@ php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLa
 php artisan vendor:publish --provider="MrTimofey\LaravelAioImages\ServiceProvider"
 php artisan migrate
 ```
+
+**Migration will create the `aio_images` table which contains a `json` field `props`.
+You can change it to `text` if your database does not support JSON/JSONB fields.
+Although it is not recommended.**
 
 If you want to use `storage/app/public` as a place to store all your images (configured by default):
 
@@ -105,7 +112,3 @@ function upload(Request $req)
 }
 
 ```
-
-TODO list:
-
-* add API to allow to add custom pipes from custom sources

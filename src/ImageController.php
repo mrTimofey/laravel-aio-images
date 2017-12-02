@@ -53,7 +53,7 @@ class ImageController extends Controller
         return $this->req->wantsJson() ? response()->json($uploaded) : redirect()->back();
     }
 
-    public function original()
+    public function original(): void
     {
         throw new \RuntimeException('Use web server configuration to request original/generated images');
     }

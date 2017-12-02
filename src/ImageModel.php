@@ -36,12 +36,12 @@ class ImageModel extends Model
         'created_at'
     ];
 
-    public static function getUploadPath()
+    public static function getUploadPath(): string
     {
         return rtrim(config('aio_images.upload_path'), '/');
     }
 
-    protected function unlink()
+    protected function unlink(): void
     {
         $fs = app('files');
         $fs->delete($this->getAbsPath());
@@ -62,7 +62,7 @@ class ImageModel extends Model
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
-    public static function upload($file, array $props = [])
+    public static function upload($file, array $props = []): self
     {
         if (isset($props['ext'])) {
             $ext = $props['ext'];
@@ -139,7 +139,7 @@ class ImageModel extends Model
      * @param string|null $pipeName
      * @return string
      */
-    public function getPath($pipeName = null)
+    public function getPath($pipeName = null): string
     {
         return $pipeName ? route('aio_images.pipe', [$pipeName, $this->attributes['id']]) :
             route('aio_images.original', $this->attributes['id']);
@@ -149,7 +149,7 @@ class ImageModel extends Model
      * @param string|null $pipeName
      * @return string
      */
-    public function getAbsPath($pipeName = null)
+    public function getAbsPath($pipeName = null): string
     {
         $uploadPath = static::getUploadPath();
         if ($pipeName) {
@@ -162,7 +162,7 @@ class ImageModel extends Model
         return $uploadPath . '/' . $this->attributes['id'];
     }
 
-    public function setIdAttribute(string $value)
+    public function setIdAttribute(string $value): void
     {
         if (empty($this->attributes['id'])) {
             $this->attributes['id'] = $value;
@@ -171,7 +171,7 @@ class ImageModel extends Model
         throw new \InvalidArgumentException('You can not set image ID manually!');
     }
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         static::deleting(function (self $i) {

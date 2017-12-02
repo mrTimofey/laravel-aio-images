@@ -15,6 +15,7 @@
     "laravel"
   ],
   "require": {
+    "php": ">=7.1.0",
     "intervention/image": "^2.4",
     "approached/laravel-image-optimizer": "^2.3"
   },

@@ -6,14 +6,14 @@ use Illuminate\Support\ServiceProvider as Base;
 
 class ServiceProvider extends Base
 {
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([__DIR__ . '/../config.php' => config_path('aio_images.php')], 'config');
         $this->publishes([__DIR__ . '/../migrations' => database_path('migrations')], 'migrations');
         $this->registerRoutes();
     }
 
-    protected function registerRoutes()
+    protected function registerRoutes(): void
     {
         $config = $this->app->make('config')->get('aio_images');
         if ($config) {
