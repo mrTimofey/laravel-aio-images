@@ -8,6 +8,7 @@ class ServiceProvider extends Base
 {
     public function boot(): void
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config.php', 'aio_images');
         $this->publishes([__DIR__ . '/../config.php' => config_path('aio_images.php')], 'config');
         $this->publishes([__DIR__ . '/../migrations' => database_path('migrations')], 'migrations');
         $this->registerRoutes();
