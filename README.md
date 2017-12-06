@@ -14,7 +14,7 @@ On-the-fly image generation just uses [intervention/image](http://image.interven
 ## Requirements
 
 * PHP 7.1
-* Laravel 5.5
+* Laravel 5
 
 ## Installation
 
@@ -23,7 +23,8 @@ sudo apt-get install pngquant gifsicle jpegoptim
 composer require mr-timofey/laravel-aio-images
 ```
 
-Add
+**For Laravel <= 5.4**
+add
 `Approached\LaravelImageOptimizer\ServiceProvider`,
 `Intervention\Image\ImageServiceProvider`,
 `MrTimofey\LaravelAioImages\ServiceProvider`
