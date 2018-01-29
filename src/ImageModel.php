@@ -5,7 +5,7 @@ namespace MrTimofey\LaravelAioImages;
 use Approached\LaravelImageOptimizer\ImageOptimizer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\Image;
+use Intervention\Image\Image as InterventionImage;
 
 /**
  * @property array $props
@@ -54,7 +54,7 @@ class ImageModel extends Model
 
     /**
      * Create and save image from uploaded file or Intervention image object. Optimize image after saving.
-     * @param UploadedFile|Image $file
+     * @param UploadedFile|InterventionImage|string $file
      * @param array $props additional props
      * @return self
      * @throws \Throwable
@@ -90,7 +90,19 @@ class ImageModel extends Model
 
         $uploadPath = static::getUploadPath();
 
-        if ($file instanceof InterventionImage) {
+        if (\is_string($file)) {
+            if (!$ext) {
+                $pieces = explode('.', $file);
+                if (\count($pieces) > 1) {
+                    $ext = array_pop($pieces);
+                }
+            }
+            if (!$ext) {
+                throw new \InvalidArgumentException('Can not guess file extension from a file name ' . $file);
+            }
+            $fileName = $name . '.' . $ext;
+            copy($file, $uploadPath . '/' . $fileName);
+        } elseif ($file instanceof InterventionImage) {
             if (!$ext) {
                 throw new \InvalidArgumentException('Can not guess file extension from the Intervention\Image\Image instance');
             }
@@ -122,7 +134,7 @@ class ImageModel extends Model
         if ($ext !== 'svg') {
             app(ImageOptimizer::class)->optimizeImage($uploadPath . '/' . $fileName);
         }
-        @chmod($uploadPath . $fileName, 0664);
+        @chmod($uploadPath . '/' . $fileName, 0664);
         $i = new static();
         foreach ($props as $k => $v) {
             if (!$v) {
@@ -162,6 +174,10 @@ class ImageModel extends Model
         return $uploadPath . '/' . $this->attributes['id'];
     }
 
+    /**
+     * @param string $value
+     * @throws \InvalidArgumentException
+     */
     public function setIdAttribute(string $value): void
     {
         if (empty($this->attributes['id'])) {
