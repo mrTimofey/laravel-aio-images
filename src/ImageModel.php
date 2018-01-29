@@ -107,7 +107,7 @@ class ImageModel extends Model
                 throw new \InvalidArgumentException('Can not guess file extension from the Intervention\Image\Image instance');
             }
             $fileName = $name . '.' . $ext;
-            $file->save($uploadPath . $fileName);
+            $file->save($uploadPath . '/' . $fileName);
         } elseif ($file instanceof UploadedFile) {
             $mime = $file->getMimeType();
 
