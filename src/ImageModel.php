@@ -187,6 +187,11 @@ class ImageModel extends Model
         throw new \InvalidArgumentException('You can not set image ID manually!');
     }
 
+    public function getForeignKey(): string
+    {
+        return 'image_id';
+    }
+
     public static function boot(): void
     {
         parent::boot();
