@@ -32,7 +32,7 @@
   },
   "extra": {
     "laravel": {
-      "providers": ["MrTimofey\\LaravelAioImages\\ServiceProvider"]
+      "providers": ["Approached\\LaravelImageOptimizer\\ServiceProvider", "MrTimofey\\LaravelAioImages\\ServiceProvider"]
     }
   }
 }
