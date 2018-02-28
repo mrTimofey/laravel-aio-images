@@ -7,7 +7,7 @@ This package includes the following:
 * service provider.
 
 Any uploaded or generated image is automatically optimized using the
-[approached/laravel-image-optimizer](https://github.com/approached/laravel-image-optimizer) package.
+[spatie/image-optimizer](https://github.com/spatie/image-optimizer) package.
 
 On-the-fly image generation just uses [intervention/image](http://image.intervention.io/) package.
 
@@ -31,7 +31,6 @@ add
 to your `app.providers` config.
 
 ```bash
-php artisan vendor:publish --provider="Approached\LaravelImageOptimizer\ServiceProvider"
 php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravel5"
 php artisan vendor:publish --provider="MrTimofey\LaravelAioImages\ServiceProvider"
 php artisan migrate

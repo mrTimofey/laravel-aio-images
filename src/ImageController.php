@@ -2,10 +2,10 @@
 
 namespace MrTimofey\LaravelAioImages;
 
-use Approached\LaravelImageOptimizer\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Intervention\Image\ImageManager;
+use Spatie\ImageOptimizer\OptimizerChain as ImageOptimizer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ImageController extends Controller
@@ -87,7 +87,7 @@ class ImageController extends Controller
 
         // save and optimize
         $intervention->save($target);
-        $this->optimizer->optimizeImage($target);
+        $this->optimizer->optimize($target);
         @chmod($target, 0664);
 
         // return file response

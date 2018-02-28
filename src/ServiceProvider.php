@@ -3,9 +3,18 @@
 namespace MrTimofey\LaravelAioImages;
 
 use Illuminate\Support\ServiceProvider as Base;
+use Spatie\ImageOptimizer\OptimizerChain as ImageOptimizer;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class ServiceProvider extends Base
 {
+    public function register(): void
+    {
+        $this->app->singleton(ImageOptimizer::class, function () {
+            return OptimizerChainFactory::create();
+        });
+    }
+
     public function boot(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config.php', 'aio_images');
