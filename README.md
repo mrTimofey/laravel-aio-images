@@ -25,7 +25,6 @@ composer require mr-timofey/laravel-aio-images
 
 **For Laravel <= 5.4**
 add
-`Approached\LaravelImageOptimizer\ServiceProvider`,
 `Intervention\Image\ImageServiceProvider`,
 `MrTimofey\LaravelAioImages\ServiceProvider`
 to your `app.providers` config.
