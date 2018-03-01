@@ -19,7 +19,7 @@ On-the-fly image generation just uses [intervention/image](http://image.interven
 ## Installation
 
 ```bash
-sudo apt-get install pngquant gifsicle jpegoptim
+sudo apt-get install pngquant gifsicle jpegoptim optipng
 composer require mr-timofey/laravel-aio-images
 ```
 
