@@ -11,7 +11,7 @@ return [
      * IMPORTANT: public_path is used to access this folder so it should be
      *      a real physical path accessible by HTTP using public_path prefix.
      */
-    'upload_path' => public_path('storage/images'),
+    'upload_path' => base_path('public/storage/images'),
 
     /**
      * On-the-fly image generation middleware.
