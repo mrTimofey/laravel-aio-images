@@ -76,7 +76,6 @@ See `config/aio_images.php` file for a further configuration instructions.
 ## Usage example:
 
 ```php
-
 // add relation to a table
 /** @var Illuminate\Database\Schema\Blueprint $table */
 $table->string('avatar_image_id')->nullable();
@@ -108,9 +107,9 @@ public function avatarImage()
 ];
 
 // display original avatar
-echo '<img src="' . route('aio_images.original', $model->avatar_image_id) . '" alt="Original avatar" />';
+echo '<img src="' . route('aio_images.original', ['image_id' => $model->avatar_image_id]) . '" alt="Original avatar" />';
 // display 120x120 squared grey colored avatar
-echo '<img src="' . route('aio_images.pipe', ['avatar', $model->avatar_image_id]) . '" alt="Processed with pipe [avatar]" />';
+echo '<img src="' . route('aio_images.pipe', ['pipe' => 'avatar', 'image_id' => $model->avatar_image_id]) . '" alt="Processed with pipe [avatar]" />';
 
 // same with ImageModel instance
 echo '<img src="' . $image->getPath() . '" alt="Original avatar" />';
