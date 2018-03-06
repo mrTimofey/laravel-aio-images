@@ -14,7 +14,7 @@ On-the-fly image generation just uses [intervention/image](http://image.interven
 ## Requirements
 
 * PHP 7.1
-* Laravel 5
+* Laravel or Lumen 5
 
 ## Installation
 
@@ -23,11 +23,7 @@ sudo apt-get install pngquant gifsicle jpegoptim optipng
 composer require mr-timofey/laravel-aio-images
 ```
 
-**For Laravel <= 5.4**
-add
-`Intervention\Image\ImageServiceProvider`,
-`MrTimofey\LaravelAioImages\ServiceProvider`
-to your `app.providers` config.
+### Laravel
 
 ```bash
 php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravel5"
@@ -44,6 +40,27 @@ If you want to use `storage/app/public` as a place to store all your images (con
 ```bash
 php artisan storage:link
 ```
+
+**For Laravel <= 5.4** add
+`Intervention\Image\ImageServiceProvider`,
+`MrTimofey\LaravelAioImages\ServiceProvider`
+to your `app.providers` config.
+
+See `config/aio_images.php` file for a further configuration instructions.
+**Do not forget to configure `aio_images.pipes`!**
+
+### Lumen
+
+Add `Intervention\Image\ImageServiceProviderLumen`, `MrTimofey\LaravelAioImages\ServiceProvider`
+service providers to `bootstrap/app.php`.
+
+Copy contents of
+[config.php](https://raw.githubusercontent.com/mrTimofey/laravel-aio-images/master/config.php)
+to `config/aio_images.php`.
+
+Create a migration `php artisan make:migration create_aio_images_table` and copy contents
+from [here](https://raw.githubusercontent.com/mrTimofey/laravel-aio-images/master/migrations/2000_01_01_000000_create_aio_images_table.php)
+to the just created migration file (`database/migrations/xxxx_xx_xx_xxxxxx_create_aio_images_table`).
 
 See `config/aio_images.php` file for a further configuration instructions.
 **Do not forget to configure `aio_images.pipes`!**
