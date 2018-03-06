@@ -3,12 +3,11 @@
 namespace MrTimofey\LaravelAioImages;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Intervention\Image\ImageManager;
 use Spatie\ImageOptimizer\OptimizerChain as ImageOptimizer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ImageController extends Controller
+class ImageController
 {
     /**
      * @var Request
