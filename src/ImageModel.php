@@ -153,8 +153,8 @@ class ImageModel extends Model
      */
     public function getPath($pipeName = null): string
     {
-        return $pipeName ? route('aio_images.pipe', [$pipeName, $this->attributes['id']]) :
-            route('aio_images.original', $this->attributes['id']);
+        return $pipeName ? route('aio_images.pipe', ['pipe' => $pipeName, 'image_id' => $this->attributes['id']]) :
+            route('aio_images.original', ['image_id' => $this->attributes['id']]);
     }
 
     /**
