@@ -54,7 +54,7 @@ class ImageController
 
     public function original(): void
     {
-        throw new \RuntimeException('Use web server configuration to request original/generated images');
+        throw new NotFoundHttpException('Use web server configuration to request original/generated images');
     }
 
     public function pipe(string $pipeName, string $imageId)
