@@ -101,7 +101,11 @@ class ImageModel extends Model
                 throw new \InvalidArgumentException('Can not guess file extension from a file name ' . $file);
             }
             $fileName = $name . '.' . $ext;
-            copy($file, $uploadPath . '/' . $fileName);
+            if (preg_match('/^(https?|ftp)\:\/\//', $fileName)) {
+                copy($file, $fileName);
+            } else {
+                copy($file, $uploadPath . '/' . $fileName);
+            }
         } elseif ($file instanceof InterventionImage) {
             if (!$ext) {
                 throw new \InvalidArgumentException('Can not guess file extension from the Intervention\Image\Image instance');
