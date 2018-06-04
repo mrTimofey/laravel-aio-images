@@ -21,7 +21,7 @@ return [
     /**
      * Images upload route. Set to false to disable.
      */
-    'upload_route' => '/upload-image',
+    'upload_route' => false,
 
     /**
      * Images upload middleware.
