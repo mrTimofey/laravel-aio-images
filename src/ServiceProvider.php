@@ -1,7 +1,8 @@
-<?php
+<?php /** @noinspection PhpUndefinedClassInspection,PhpUndefinedNamespaceInspection */
 
 namespace MrTimofey\LaravelAioImages;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider as Base;
 use Laravel\Lumen\Application as LumenApplication;
 use Spatie\ImageOptimizer\OptimizerChain as ImageOptimizer;
@@ -11,22 +12,29 @@ class ServiceProvider extends Base
 {
     public function register(): void
     {
-        $this->app->singleton(ImageOptimizer::class, function () {
+        $this->app->singleton(ImageOptimizer::class, static function () {
             return OptimizerChainFactory::create();
         });
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function boot(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config.php', 'aio_images');
         $this->publishes([__DIR__ . '/../config.php' => base_path('config/aio_images.php')], 'config');
         $this->publishes([__DIR__ . '/../migrations' => database_path('migrations')], 'migrations');
         if ($this->app instanceof LumenApplication) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $this->app->configure('aio_images');
         }
         $this->registerRoutes();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     protected function registerRoutes(): void
     {
         $config = $this->app->make('config')->get('aio_images');

@@ -1,11 +1,18 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 namespace MrTimofey\LaravelAioImages;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Intervention\Image\Image as InterventionImage;
+use InvalidArgumentException;
 use Spatie\ImageOptimizer\OptimizerChain as ImageOptimizer;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Throwable;
+use function count;
+use function is_string;
 
 /**
  * @property array $props
@@ -57,10 +64,10 @@ class ImageModel extends Model
      * @param UploadedFile|InterventionImage|string $file
      * @param array $props additional props
      * @return self
-     * @throws \Throwable
-     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
-     * @throws \InvalidArgumentException
-     * @throws \Exception
+     * @throws Throwable
+     * @throws FileException
+     * @throws InvalidArgumentException
+     * @throws Exception
      */
     public static function upload($file, array $props = []): self
     {
@@ -77,12 +84,12 @@ class ImageModel extends Model
                 $props['name'] .= '.' . $ext;
             }
         } else {
-            $name = str_random(6) . time();
+            $name = Str::random(6) . time();
         }
 
         if (!$ext && $name) {
             $pieces = explode('.', $name);
-            if (\count($pieces) > 1) {
+            if (count($pieces) > 1) {
                 $ext = array_pop($pieces);
                 $name = implode('.', $pieces);
             }
@@ -90,21 +97,21 @@ class ImageModel extends Model
 
         $uploadPath = static::getUploadPath();
 
-        if (\is_string($file)) {
+        if (is_string($file)) {
             if (!$ext) {
                 $pieces = explode('.', $file);
-                if (\count($pieces) > 1) {
+                if (count($pieces) > 1) {
                     $ext = array_pop($pieces);
                 }
             }
             if (!$ext) {
-                throw new \InvalidArgumentException('Can not guess file extension from a file name ' . $file);
+                throw new InvalidArgumentException('Can not guess file extension from a file name ' . $file);
             }
             $fileName = $name . '.' . $ext;
             copy($file, $uploadPath . '/' . $fileName);
         } elseif ($file instanceof InterventionImage) {
             if (!$ext) {
-                throw new \InvalidArgumentException('Can not guess file extension from the Intervention\Image\Image instance');
+                throw new InvalidArgumentException('Can not guess file extension from the Intervention\Image\Image instance');
             }
             $fileName = $name . '.' . $ext;
             $file->save($uploadPath . '/' . $fileName);
@@ -115,8 +122,8 @@ class ImageModel extends Model
             if ($mime === 'text/html' && $file->getClientOriginalExtension() === 'svg') {
                 $mime = 'image/svg+xml';
             }
-            if (!starts_with($mime, 'image')) {
-                throw new \InvalidArgumentException('Illuminate\Http\UploadedFile is not an image');
+            if (!Str::startsWith($mime, 'image')) {
+                throw new InvalidArgumentException('Illuminate\Http\UploadedFile is not an image');
             }
             if (!$ext) {
                 $ext = !empty($file->getClientOriginalExtension()) ? $file->getClientOriginalExtension() : $file->guessExtension();
@@ -127,7 +134,7 @@ class ImageModel extends Model
                 $props['name'] = $file->getClientOriginalName();
             }
         } else {
-            throw new \InvalidArgumentException('Wrong argument type: first argument can be ' .
+            throw new InvalidArgumentException('Wrong argument type: first argument can be ' .
                 'Intervention\Image\Image or Illuminate\Http\UploadedFile instance');
         }
 
@@ -176,7 +183,7 @@ class ImageModel extends Model
 
     /**
      * @param string $value
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setIdAttribute(string $value): void
     {
@@ -184,7 +191,7 @@ class ImageModel extends Model
             $this->attributes['id'] = $value;
             return;
         }
-        throw new \InvalidArgumentException('You can not set image ID manually!');
+        throw new InvalidArgumentException('You can not set image ID manually!');
     }
 
     public function getForeignKey(): string
@@ -195,7 +202,7 @@ class ImageModel extends Model
     public static function boot(): void
     {
         parent::boot();
-        static::deleting(function (self $i) {
+        static::deleting(static function (self $i) {
             $i->unlink();
         });
     }

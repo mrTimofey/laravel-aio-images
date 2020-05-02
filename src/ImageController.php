@@ -1,11 +1,17 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 namespace MrTimofey\LaravelAioImages;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Spatie\ImageOptimizer\OptimizerChain as ImageOptimizer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
+use function call_user_func_array;
+use function is_array;
 
 class ImageController
 {
@@ -37,16 +43,20 @@ class ImageController
         $this->pipesConfig = config('aio_images.pipes');
     }
 
+    /**
+     * @return JsonResponse|RedirectResponse
+     * @throws Throwable
+     */
     public function upload()
     {
         $uploaded = [];
         foreach ($this->req->allFiles() as $file) {
-            if (\is_array($file)) {
+            if (is_array($file)) {
                 foreach ($file as $_file) {
-                    $uploaded[] = ImageModel::upload($_file)->id;
+                    $uploaded[] = ImageModel::upload($_file)->getKey();
                 }
             } else {
-                $uploaded[] = ImageModel::upload($file)->id;
+                $uploaded[] = ImageModel::upload($file)->getKey();
             }
         }
         return $this->req->wantsJson() ? response()->json($uploaded) : redirect()->back();
@@ -57,9 +67,15 @@ class ImageController
         throw new NotFoundHttpException('Use web server configuration to request original/generated images');
     }
 
+    /**
+     * @param string $pipeName
+     * @param string $imageId
+     * @return mixed
+     * @throws Throwable
+     */
     public function pipe(string $pipeName, string $imageId)
     {
-        if (empty($this->pipesConfig[$pipeName]) || ends_with($imageId, '.svg')) {
+        if (empty($this->pipesConfig[$pipeName]) || Str::endsWith($imageId, '.svg')) {
             throw new NotFoundHttpException();
         }
         $pipe = $this->pipesConfig[$pipeName];
@@ -80,7 +96,7 @@ class ImageController
         // go through pipe
         $intervention = $this->manager->make($img->getAbsPath());
         foreach ((array)$pipe as $args) {
-            \call_user_func_array([$intervention, array_shift($args)], $args);
+            call_user_func_array([$intervention, array_shift($args)], $args);
         }
         $target = $img->getAbsPath($pipeName);
 
